@@ -16,7 +16,6 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
         tabBarStyle: { backgroundColor: isDark ? BLACK_COLOR : "white" },
         tabBarActiveTintColor: isDark ? YELLOW_COLOR : BLACK_COLOR,
         tabBarinactiveTintColor: isDark ? DARK_GREY : LIGHT_GREY,
@@ -31,7 +30,7 @@ const Tabs = () => {
     >
       <Tab.Screen
         name="Movies"
-        component={Stack}
+        component={Movies}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="film" color={color} size={size} />
