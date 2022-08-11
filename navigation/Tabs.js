@@ -6,6 +6,7 @@ import Search from "../screens/Search";
 import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BLACK_COLOR, DARK_GREY, LIGHT_GREY, YELLOW_COLOR } from "../colors";
+import Stack from "./Stack";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
         tabBarStyle: { backgroundColor: isDark ? BLACK_COLOR : "white" },
         tabBarActiveTintColor: isDark ? YELLOW_COLOR : BLACK_COLOR,
         tabBarinactiveTintColor: isDark ? DARK_GREY : LIGHT_GREY,
@@ -29,7 +31,7 @@ const Tabs = () => {
     >
       <Tab.Screen
         name="Movies"
-        component={Movies}
+        component={Stack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="film" color={color} size={size} />
