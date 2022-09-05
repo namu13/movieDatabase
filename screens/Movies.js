@@ -18,7 +18,9 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-const BgImg = styled.Image``;
+const BgImg = styled.Image`
+  background-color: teal;
+`;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -57,9 +59,12 @@ const Movies = () => {
               source={{ uri: makeImgPath(movie.backdrop_path) }}
             />
             <BlurView
+              style={StyleSheet.absoluteFill}
               blurType="light"
               blurAmount={10}
-              style={StyleSheet.absoluteFill}
+              blurRadius={10}
+              downsampleFactor={10}
+              overlayColor
             >
               <Text>{movie.original_title}</Text>
             </BlurView>
