@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, Text } from "react-native";
 import Swiper from "react-native-web-swiper";
 import styled from "styled-components/native";
-import { BlurView } from "expo-blur";
+import axios from "axios";
+import { BlurView } from "@react-native-community/blur";
 import { makeImgPath } from "../utils";
 
 const API_KEY = "d4ec0d7faffb5984587ec0dd913c184d";
@@ -25,13 +26,12 @@ const Movies = () => {
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
   const getNowPlaying = async () => {
-    const { results } = await (
-      await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR
-    `)
-    ).json();
-    setNowPlaying(results);
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+    );
+
+    setNowPlaying(data.results);
     setLoading(false);
-    console.log(results);
   };
   useEffect(() => {
     getNowPlaying();
@@ -45,7 +45,10 @@ const Movies = () => {
       <Swiper
         loop
         controlsEnabled={false}
-        containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
+        containerStyle={{
+          width: "100%",
+          height: SCREEN_HEIGHT / 4,
+        }}
       >
         {nowPlaying.map((movie) => (
           <View key={movie.id}>
@@ -53,7 +56,11 @@ const Movies = () => {
               style={StyleSheet.absoluteFill}
               source={{ uri: makeImgPath(movie.backdrop_path) }}
             />
-            <BlurView intensity={100} style={StyleSheet.absoluteFill}>
+            <BlurView
+              blurType="light"
+              blurAmount={10}
+              style={StyleSheet.absoluteFill}
+            >
               <Text>{movie.original_title}</Text>
             </BlurView>
           </View>
