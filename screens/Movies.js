@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, StyleSheet, Text } from "react-native";
-import Swiper from "react-native-web-swiper";
+import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
+import Swiper from "react-native-swiper";
 import styled from "styled-components/native";
 import axios from "axios";
 import { BlurView } from "@react-native-community/blur";
 import { makeImgPath } from "../utils";
+import { useColorScheme } from "react-native";
 
 const API_KEY = "d4ec0d7faffb5984587ec0dd913c184d";
 const Container = styled.ScrollView``;
@@ -22,9 +23,44 @@ const BgImg = styled.Image`
   background-color: teal;
 `;
 
+const Title = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+`;
+
+const Overview = styled.Text`
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.6);
+`;
+
+const Votes = styled(Overview)`
+  margin-top: 5px;
+  font-size: 12px;
+`;
+
+const Wrapper = styled.View`
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Column = styled.View`
+  width: 40%;
+  margin-left: 20px;
+`;
+
+const Poster = styled.Image`
+  width: 80px;
+  height: 140px;
+  border-radius: 5px;
+`;
+
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies = () => {
+  const isDark = useColorScheme() === "dark";
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
   const getNowPlaying = async () => {
@@ -45,8 +81,12 @@ const Movies = () => {
   ) : (
     <Container>
       <Swiper
+        horizontal
         loop
-        controlsEnabled={false}
+        // autoplay
+        // autoplayTimeout={3.5}
+        showsButtons={false}
+        showsPagination={false}
         containerStyle={{
           width: "100%",
           height: SCREEN_HEIGHT / 4,
@@ -60,13 +100,24 @@ const Movies = () => {
             />
             <BlurView
               style={StyleSheet.absoluteFill}
-              blurType="light"
+              blurType={isDark ? "dark" : "light"}
               blurAmount={10}
               blurRadius={10}
               downsampleFactor={10}
               overlayColor
             >
-              <Text>{movie.original_title}</Text>
+              <Wrapper>
+                <Poster
+                  source={{ uri: makeImgPath(movie.poster_path) }}
+                ></Poster>
+                <Column>
+                  <Title numberOfLines={2}>{movie.original_title}</Title>
+                  {movie.vote_average > 0 ? (
+                    <Votes>⭐️{movie.vote_average}/10</Votes>
+                  ) : null}
+                  <Overview numberOfLines={3}>{movie.overview}</Overview>
+                </Column>
+              </Wrapper>
             </BlurView>
           </View>
         ))}
