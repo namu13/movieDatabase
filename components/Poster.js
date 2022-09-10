@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { makeImgPath } from "../utils";
 
 const Image = styled.Image`
-  width: 80px;
+  width: 90px;
   height: 140px;
   border-radius: 5px;
 `;
