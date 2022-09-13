@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 import axios from "axios";
 import Slide from "../components/Slide";
 import Poster from "../components/Poster";
+import { RefreshControl } from "react-native";
 
 const API_KEY = "d4ec0d7faffb5984587ec0dd913c184d";
 const Container = styled.ScrollView``;
@@ -78,6 +79,7 @@ const CommingSoonTitle = styled(ListTitle)`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
@@ -108,12 +110,22 @@ const Movies = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  };
   return loading ? (
     <Loader>
       <ActivityIndicator />
     </Loader>
   ) : (
-    <Container>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <Swiper
         horizontal
         loop
