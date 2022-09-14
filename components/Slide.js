@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { BlurView } from "@react-native-community/blur";
 import { makeImgPath } from "../utils";
 import Poster from "./Poster";
+import Votes from "./Votes";
 
 const BgImg = styled.Image``;
 
@@ -15,11 +16,6 @@ const Title = styled.Text`
 const Overview = styled.Text`
   margin-top: 10px;
   color: rgba(255, 255, 255, 0.6);
-`;
-
-const Votes = styled(Overview)`
-  margin-top: 5px;
-  font-size: 12px;
 `;
 
 const Wrapper = styled.View`
@@ -60,7 +56,8 @@ const Slide = ({
         <Poster path={posterPath} />
         <Column>
           <Title numberOfLines={2}>{originalTitle}</Title>
-          {voteAverage > 0 ? <Votes>⭐️{voteAverage}/10</Votes> : null}
+          {/* {voteAverage > 0 ? <Votes>⭐️{voteAverage}/10</Votes> : null} */}
+          <Votes voteAverage={voteAverage} />
           <Overview numberOfLines={3}>{overview}</Overview>
         </Column>
       </Wrapper>

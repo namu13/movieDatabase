@@ -4,8 +4,9 @@ import Swiper from "react-native-swiper";
 import styled from "styled-components/native";
 import axios from "axios";
 import Slide from "../components/Slide";
-import Poster from "../components/Poster";
+import VMedia from "../components/VMedia";
 import { RefreshControl } from "react-native";
+import HMedia from "../components/HMedia";
 
 const API_KEY = "d4ec0d7faffb5984587ec0dd913c184d";
 const Container = styled.ScrollView``;
@@ -23,53 +24,12 @@ const ListTitle = styled.Text`
   margin-left: 30px;
 `;
 
-const TrendingScroll = styled.ScrollView`
-  margin-top: 20px;
-`;
-
-const Movie = styled.View`
-  margin-right: 20px;
-  align-items: center;
-`;
-
-const Title = styled.Text`
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  margin-top: 7px;
-  margin-bottom: 5px;
-`;
-
-const Votes = styled.Text`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 10px;
-`;
-
 const ListContainer = styled.View`
   margin-bottom: 40px;
 `;
 
-const Hmovie = styled.View`
-  padding: 0px 30px;
-  flex-direction: row;
-  margin-bottom: 30px;
-`;
-
-const HColumn = styled.View`
-  margin-left: 50px;
-  width: 80%;
-`;
-
-const Overview = styled.Text`
-  color: white;
-  opacity: 0.8;
-  width: 80%;
-`;
-
-const Release = styled.Text`
-  color: white;
-  font-size: 12px;
-  margin: 10px 0;
+const TrendingScroll = styled.ScrollView`
+  margin-top: 20px;
 `;
 
 const CommingSoonTitle = styled(ListTitle)`
@@ -158,41 +118,24 @@ const Movies = () => {
           showsHorizontalScrollIndicator={false}
         >
           {trending.map((movie) => (
-            <Movie key={movie.id}>
-              <Poster path={movie.poster_path} />
-              <Title>
-                {movie.original_title.slice(0, 12)}
-                {movie.original_title.length > 13 ? "..." : null}
-              </Title>
-              {movie.vote_average ? (
-                <Votes>⭐️ {movie.vote_average.toFixed(1)}/10</Votes>
-              ) : (
-                "comming soon"
-              )}
-            </Movie>
+            <VMedia
+              key={movie.id}
+              posterPath={movie.poster_path}
+              originalTitle={movie.original_title}
+              voteAverage={movie.vote_average}
+            />
           ))}
         </TrendingScroll>
       </ListContainer>
       <CommingSoonTitle>Comming Soon</CommingSoonTitle>
       {upcoming.map((movie) => (
-        <Hmovie key={movie.id}>
-          <Poster path={movie.poster_path} />
-          <HColumn>
-            <Title>{movie.original_title}</Title>
-            <Release>
-              {new Date(movie.release_date).toLocaleDateString("ko", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </Release>
-            <Overview>
-              {movie.overview !== "" && movie.overview.length > 80
-                ? `${movie.overview.slice(0, 140)}...`
-                : movie.overview}
-            </Overview>
-          </HColumn>
-        </Hmovie>
+        <HMedia
+          key={movie.id}
+          posterPath={movie.poster_path}
+          originalTitle={movie.original_title}
+          releaseDate={movie.release_date}
+          overview={movie.overview}
+        />
       ))}
     </Container>
   );
