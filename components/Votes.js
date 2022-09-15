@@ -9,7 +9,7 @@ const Votes = ({ voteAverage }) => {
   return voteAverage ? (
     <Vote>⭐️ {voteAverage.toFixed(1)}/10</Vote>
   ) : (
-    "comming soon"
+    <Vote>comming soon</Vote>
   );
 };
 

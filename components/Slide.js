@@ -56,7 +56,6 @@ const Slide = ({
         <Poster path={posterPath} />
         <Column>
           <Title numberOfLines={2}>{originalTitle}</Title>
-          {/* {voteAverage > 0 ? <Votes>⭐️{voteAverage}/10</Votes> : null} */}
           <Votes voteAverage={voteAverage} />
           <Overview numberOfLines={3}>{overview}</Overview>
         </Column>
