@@ -7,6 +7,7 @@ import Slide from "../components/Slide";
 import VMedia from "../components/VMedia";
 import { RefreshControl } from "react-native";
 import HMedia from "../components/HMedia";
+import { View } from "react-native";
 
 const API_KEY = "d4ec0d7faffb5984587ec0dd913c184d";
 const Container = styled.ScrollView``;
@@ -28,7 +29,7 @@ const ListContainer = styled.View`
   margin-bottom: 40px;
 `;
 
-const TrendingScroll = styled.ScrollView`
+const TrendingScroll = styled.FlatList`
   margin-top: 20px;
 `;
 
@@ -113,19 +114,20 @@ const Movies = () => {
       <ListContainer>
         <ListTitle>Trending Movies</ListTitle>
         <TrendingScroll
-          contentContainerStyle={{ paddingLeft: 30 }}
+          data={trending}
           horizontal
+          keyExtractor={(item) => item.id + ""}
           showsHorizontalScrollIndicator={false}
-        >
-          {trending.map((movie) => (
+          contentContainerStyle={{ paddingHorizontal: 30 }}
+          ItemSeparatorComponent={() => <View style={{ width: 30 }} />}
+          renderItem={({ item }) => (
             <VMedia
-              key={movie.id}
-              posterPath={movie.poster_path}
-              originalTitle={movie.original_title}
-              voteAverage={movie.vote_average}
+              posterPath={item.poster_path}
+              originalTitle={item.original_title}
+              voteAverage={item.vote_average}
             />
-          ))}
-        </TrendingScroll>
+          )}
+        />
       </ListContainer>
       <CommingSoonTitle>Comming Soon</CommingSoonTitle>
       {upcoming.map((movie) => (
