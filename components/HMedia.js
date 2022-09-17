@@ -12,11 +12,10 @@ const Title = styled.Text`
 const Hmovie = styled.View`
   padding: 0px 30px;
   flex-direction: row;
-  margin-bottom: 30px;
 `;
 
 const HColumn = styled.View`
-  margin-left: 50px;
+  margin-left: 30px;
   width: 80%;
 `;
 
