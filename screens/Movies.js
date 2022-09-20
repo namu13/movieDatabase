@@ -8,6 +8,8 @@ import VMedia from "../components/VMedia";
 import HMedia from "../components/HMedia";
 import { View } from "react-native";
 import { FlatList } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { moviesApi } from "../api";
 
 const Container = styled.ScrollView``;
 
@@ -48,6 +50,31 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const { isLoading: nowPlayingLoading, data: nowPlayingData } = useQuery(
+    ["nowPlaying"],
+    moviesApi.nowPlaying
+  );
+  const { isLoading: upcomingLoading, data: upcomingData } = useQuery(
+    ["upcoming"],
+    moviesApi.upcoming
+  );
+  const { isLoading: trendingLoading, data: trendingData } = useQuery(
+    ["trending"],
+    moviesApi.trending
+  );
+
+  // const test = async () => {
+  //   const res = await (
+  //     await fetch(
+  //       "https://api.themoviedb.org/3/trending/movie/week?api_key=d4ec0d7faffb5984587ec0dd913c184d"
+  //     )
+  //   ).json();
+  //   console.log(res);
+  // };
+
+  // test();
+
+  console.log(nowPlayingData);
 
   const onRefresh = async () => {};
 
@@ -68,6 +95,8 @@ const Movies = () => {
     />
   );
   const movieKeyExtractor = (item) => item.id + "";
+
+  const loading = nowPlayingLoading || upcomingLoading || trendingLoading;
   return loading ? (
     <Loader>
       <ActivityIndicator />
@@ -91,7 +120,7 @@ const Movies = () => {
               height: SCREEN_HEIGHT / 4,
             }}
           >
-            {nowPlaying.map((movie) => (
+            {nowPlayingData.results.map((movie) => (
               <Slide
                 key={movie.id}
                 backdropPath={movie.backdrop_path}
@@ -105,7 +134,7 @@ const Movies = () => {
           <ListContainer>
             <ListTitle>Trending Movies</ListTitle>
             <TrendingScroll
-              data={trending}
+              data={trendingData.results}
               horizontal
               keyExtractor={movieKeyExtractor}
               showsHorizontalScrollIndicator={false}
@@ -117,7 +146,7 @@ const Movies = () => {
           <CommingSoonTitle>Comming Soon</CommingSoonTitle>
         </>
       }
-      data={upcoming}
+      data={upcomingData.results}
       keyExtractor={movieKeyExtractor}
       ItemSeparatorComponent={HSeparator}
       renderItem={renderHMeida}
