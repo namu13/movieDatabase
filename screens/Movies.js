@@ -63,17 +63,6 @@ const Movies = () => {
     moviesApi.trending
   );
 
-  // const test = async () => {
-  //   const res = await (
-  //     await fetch(
-  //       "https://api.themoviedb.org/3/trending/movie/week?api_key=d4ec0d7faffb5984587ec0dd913c184d"
-  //     )
-  //   ).json();
-  //   console.log(res);
-  // };
-
-  // test();
-
   console.log(nowPlayingData);
 
   const onRefresh = async () => {};
